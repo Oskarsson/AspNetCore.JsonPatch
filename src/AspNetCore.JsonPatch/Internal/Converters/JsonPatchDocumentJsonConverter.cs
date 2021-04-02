@@ -10,9 +10,9 @@ using AspNetCore.JsonPatch.Operations;
 namespace AspNetCore.JsonPatch.Converters
 {
     /// <summary>
-    ///     Converts an <see cref="JsonPatchDocument{TModel}"/> to or from JSON.
+    ///     Converts an <see cref="JsonPatchDocument{TModel}" /> to or from JSON.
     /// </summary>
-    public class JsonPatchDocumentConverter : JsonConverter<JsonPatchDocument?>
+    internal class JsonPatchDocumentJsonConverter : JsonConverter<JsonPatchDocument>
     {
         /// <inheritdoc />
         public override JsonPatchDocument? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -22,9 +22,10 @@ namespace AspNetCore.JsonPatch.Converters
                 if (reader.TokenType == JsonTokenType.Null)
                     return null;
 
-                var operations = JsonSerializer.Deserialize<List<Operation>>(ref reader, options) ?? new List<Operation>();
+                var operations = JsonSerializer.Deserialize<List<Operation>>(ref reader, options) ??
+                                 new List<Operation>();
 
-                return new JsonPatchDocument(operations);
+                return new JsonPatchDocument(operations, options);
             }
             catch (Exception ex)
             {
@@ -33,14 +34,9 @@ namespace AspNetCore.JsonPatch.Converters
         }
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, JsonPatchDocument? value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, JsonPatchDocument value, JsonSerializerOptions options)
         {
-            if (value is IJsonPatchDocument patchDocument)
-            {
-                var operations = patchDocument.GetOperations();
-
-                JsonSerializer.Serialize(writer, operations, options);
-            }
+            JsonSerializer.Serialize(writer, value.Operations, options);
         }
     }
 }

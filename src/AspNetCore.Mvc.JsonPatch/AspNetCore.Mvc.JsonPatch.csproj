@@ -12,7 +12,7 @@
 
   <PropertyGroup>
     <PackageId>Oskarsson.AspNetCore.Mvc.JsonPatch</PackageId>
-    <Version>1.0.1-alpha</Version>
+    <Version>1.0.2-alpha</Version>
     <PackageTags>aspnetcore aspnetcoremvc json jsonpatch systemtextjson</PackageTags>
     <Description>ASP.NET Core MVC formatters for JSON PATCH input using System.Text.Json.</Description>
     <RepositoryUrl>https://github.com/Oskarsson/AspNetCore.JsonPatch.git</RepositoryUrl>
@@ -22,6 +22,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Authors>Microsoft</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AspNetCore.Mvc.JsonPatch.Tests" />
+  </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

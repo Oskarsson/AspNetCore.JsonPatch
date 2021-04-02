@@ -16,7 +16,7 @@ namespace AspNetCore.JsonPatch.Internal
     ///     This API supports infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public class DynamicObjectAdapter : IAdapter
+    internal class DynamicObjectAdapter : IAdapter
     {
         /// <inheritdoc />
         public virtual bool TryAdd(object target, Type targetType, string? segment, JsonSerializerOptions jsonSerializerOptions, object? value, out string? errorMessage)
@@ -50,7 +50,7 @@ namespace AspNetCore.JsonPatch.Internal
             // Setting the value to "null" will use the default value in case of value types, and
             // null in case of reference types
             object? value = null;
-            if (property.GetType().GetTypeInfo().IsValueType
+            if (property.GetType().IsValueType
                 && Nullable.GetUnderlyingType(property.GetType()) == null)
                 value = Activator.CreateInstance(property.GetType());
 

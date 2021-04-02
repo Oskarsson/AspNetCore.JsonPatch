@@ -21,7 +21,7 @@ namespace AspNetCore.JsonPatch
     ///     A type describing a JsonPatch document.
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    [JsonConverter(typeof(TypedJsonPatchDocumentConverterFactory))]
+    [JsonConverter(typeof(JsonPatchDocumentJsonConverterFactory))]
     public class JsonPatchDocument<TModel> : IJsonPatchDocument where TModel : class
     {
         /// <summary>
@@ -43,17 +43,16 @@ namespace AspNetCore.JsonPatch
         /// </summary>
         /// <param name="operations">The collection of <see cref="Operation"/> items.</param>
         /// <param name="jsonSerializerOptions">The <see cref="JsonSerializerOptions"/>.</param>
-        public JsonPatchDocument(List<Operation<TModel>> operations, JsonSerializerOptions jsonSerializerOptions)
+        internal JsonPatchDocument(List<Operation<TModel>> operations, JsonSerializerOptions jsonSerializerOptions)
         {
             Operations = operations ?? throw new ArgumentNullException(nameof(operations));
             JsonSerializerOptions = jsonSerializerOptions;
         }
 
         /// <summary>
-        ///     The <see cref="IJsonPatchDocument.JsonSerializerOptions"/>.
+        ///     The <see cref="JsonSerializerOptions"/>.
         /// </summary>
-        [JsonIgnore]
-        public JsonSerializerOptions JsonSerializerOptions { get; set; }
+        internal JsonSerializerOptions JsonSerializerOptions { get; }
 
         /// <summary>
         ///     Retrieves the operations in the patch document.
@@ -500,12 +499,13 @@ namespace AspNetCore.JsonPatch
         ///     Apply this JsonPatchDocument
         /// </summary>
         /// <param name="objectToApplyTo">Object to apply the JsonPatchDocument to</param>
-        public void ApplyTo(TModel objectToApplyTo)
+        /// <param name="options">The <see cref="JsonSerializerOptions"/>.</param>
+        public void ApplyTo(TModel objectToApplyTo, JsonSerializerOptions? options = null)
         {
             if (objectToApplyTo == null)
                 throw new ArgumentNullException(nameof(objectToApplyTo));
 
-            ApplyTo(objectToApplyTo, new ObjectAdapter(JsonSerializerOptions, null, new AdapterFactory()));
+            ApplyTo(objectToApplyTo, new ObjectAdapter(options ?? JsonSerializerOptions, null, new AdapterFactory()));
         }
 
         /// <summary>
@@ -516,6 +516,17 @@ namespace AspNetCore.JsonPatch
         public void ApplyTo(TModel objectToApplyTo, Action<JsonPatchError> logErrorAction)
         {
             ApplyTo(objectToApplyTo, new ObjectAdapter(JsonSerializerOptions, logErrorAction, new AdapterFactory()), logErrorAction);
+        }
+
+        /// <summary>
+        ///     Apply this JsonPatchDocument
+        /// </summary>
+        /// <param name="objectToApplyTo">Object to apply the JsonPatchDocument to</param>
+        /// <param name="options">The <see cref="JsonSerializerOptions"/>.</param>
+        /// <param name="logErrorAction">Action to log errors</param>
+        public void ApplyTo(TModel objectToApplyTo, JsonSerializerOptions options, Action<JsonPatchError> logErrorAction)
+        {
+            ApplyTo(objectToApplyTo, new ObjectAdapter(options, logErrorAction, new AdapterFactory()), logErrorAction);
         }
 
         /// <summary>

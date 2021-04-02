@@ -52,10 +52,10 @@ namespace AspNetCore.Mvc.JsonPatch
 
             patchDoc.ApplyTo(objectToApplyTo, jsonPatchError =>
             {
-                var affectedObjectName = jsonPatchError.AffectedObject.GetType().Name;
+                var affectedObjectName = jsonPatchError.AffectedObject?.GetType().Name;
                 var key = string.IsNullOrEmpty(prefix) ? affectedObjectName : prefix + "." + affectedObjectName;
 
-                modelState.TryAddModelError(key, jsonPatchError.ErrorMessage);
+                modelState.TryAddModelError(key ?? string.Empty, jsonPatchError.ErrorMessage);
             });
         }
     }

@@ -4,12 +4,14 @@
 using System;
 using System.Text.Json.Serialization;
 using AspNetCore.JsonPatch.Adapters;
+using AspNetCore.JsonPatch.Converters;
 
 namespace AspNetCore.JsonPatch.Operations
 {
     /// <summary>
     ///     A type describing an untyped patch operation.
     /// </summary>
+    [JsonConverter(typeof(OperationJsonConverter))]
     public class Operation
     {
         private string _op = null!;

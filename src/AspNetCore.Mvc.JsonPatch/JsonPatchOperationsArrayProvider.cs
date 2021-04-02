@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Reflection;
 using AspNetCore.JsonPatch;
 using AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -44,7 +43,7 @@ namespace AspNetCore.Mvc.JsonPatch
             {
                 foreach (var parameterDescription in result.ParameterDescriptions)
                 {
-                    if (!typeof(IJsonPatchDocument).GetTypeInfo().IsAssignableFrom(parameterDescription.Type))
+                    if (!typeof(IJsonPatchDocument).IsAssignableFrom(parameterDescription.Type))
                         continue;
 
                     parameterDescription.Type = typeof(Operation[]);

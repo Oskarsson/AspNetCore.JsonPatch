@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Text.Json;
 using AspNetCore.JsonPatch.Operations;
 
 namespace AspNetCore.JsonPatch
@@ -12,11 +11,6 @@ namespace AspNetCore.JsonPatch
     /// </summary>
     public interface IJsonPatchDocument
     {
-        /// <summary>
-        ///     The <see cref="JsonSerializerOptions"/>.
-        /// </summary>
-        JsonSerializerOptions JsonSerializerOptions { get; set; }
-
         /// <summary>
         ///     Retrieves the operations in the patch document.
         /// </summary>

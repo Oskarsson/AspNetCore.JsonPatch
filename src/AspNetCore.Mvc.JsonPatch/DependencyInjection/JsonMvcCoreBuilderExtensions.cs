@@ -3,11 +3,8 @@
 
 using System;
 using AspNetCore.Mvc.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Options;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -27,9 +24,8 @@ namespace Microsoft.Extensions.DependencyInjection
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            builder.Services.TryAddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, JsonPatchMvcOptionsSetup>());
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Transient<IApiDescriptionProvider, JsonPatchOperationsArrayProvider>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor
+                .Transient<IApiDescriptionProvider, JsonPatchOperationsArrayProvider>());
 
             return builder;
         }

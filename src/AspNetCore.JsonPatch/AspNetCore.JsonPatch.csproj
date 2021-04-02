@@ -12,7 +12,7 @@
 
   <PropertyGroup>
     <PackageId>Oskarsson.AspNetCore.JsonPatch</PackageId>
-    <Version>1.0.1-alpha</Version>
+    <Version>1.0.2-alpha</Version>
     <PackageTags>aspnetcore json jsonpatch systemtextjson</PackageTags>
     <Description>ASP.NET Core support for JSON PATCH with System.Text.Json.</Description>
     <RepositoryUrl>https://github.com/Oskarsson/AspNetCore.JsonPatch.git</RepositoryUrl>
@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <InternalsVisibleTo Include="AspNetCore.JsonPatch.Tests" />
   </ItemGroup>
 
 </Project>

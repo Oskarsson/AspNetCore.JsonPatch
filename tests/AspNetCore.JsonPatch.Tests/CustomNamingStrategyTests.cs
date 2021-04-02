@@ -1,4 +1,4 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
@@ -25,10 +25,9 @@ namespace AspNetCore.JsonPatch.Tests
 
             var patchDocument = new JsonPatchDocument();
             patchDocument.Add("NewInt", 1);
-            patchDocument.JsonSerializerOptions = jsonSerializerOptions;
 
             // Act
-            patchDocument.ApplyTo(targetObject);
+            patchDocument.ApplyTo(targetObject, jsonSerializerOptions);
 
             // Assert
             Assert.Equal(1, targetObject.customNewInt);
@@ -50,10 +49,9 @@ namespace AspNetCore.JsonPatch.Tests
 
             var patchDocument = new JsonPatchDocument();
             patchDocument.Copy("StringProperty", "AnotherStringProperty");
-            patchDocument.JsonSerializerOptions = jsonSerializerOptions;
 
             // Act
-            patchDocument.ApplyTo(targetObject);
+            patchDocument.ApplyTo(targetObject, jsonSerializerOptions);
 
             // Assert
             Assert.Equal("A", targetObject.customAnotherStringProperty);
@@ -74,10 +72,9 @@ namespace AspNetCore.JsonPatch.Tests
 
             var patchDocument = new JsonPatchDocument();
             patchDocument.Move("StringProperty", "AnotherStringProperty");
-            patchDocument.JsonSerializerOptions = jsonSerializerOptions;
 
             // Act
-            patchDocument.ApplyTo(targetObject);
+            patchDocument.ApplyTo(targetObject, jsonSerializerOptions);
             var cont = targetObject as IDictionary<string, object>;
             cont.TryGetValue("customStringProperty", out var valueFromDictionary);
 
@@ -102,10 +99,9 @@ namespace AspNetCore.JsonPatch.Tests
 
             var patchDocument = new JsonPatchDocument();
             patchDocument.Remove("Test");
-            patchDocument.JsonSerializerOptions = jsonSerializerOptions;
 
             // Act
-            patchDocument.ApplyTo(targetObject);
+            patchDocument.ApplyTo(targetObject, jsonSerializerOptions);
             var cont = targetObject as IDictionary<string, int>;
             cont.TryGetValue("customTest", out var valueFromDictionary);
 
@@ -127,10 +123,9 @@ namespace AspNetCore.JsonPatch.Tests
 
             var patchDocument = new JsonPatchDocument();
             patchDocument.Replace("Test", 2);
-            patchDocument.JsonSerializerOptions = jsonSerializerOptions;
 
             // Act
-            patchDocument.ApplyTo(targetObject);
+            patchDocument.ApplyTo(targetObject, jsonSerializerOptions);
 
             // Assert
             Assert.Equal(2, targetObject.customTest);

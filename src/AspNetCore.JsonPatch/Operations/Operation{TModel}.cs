@@ -2,7 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Text.Json.Serialization;
 using AspNetCore.JsonPatch.Adapters;
+using AspNetCore.JsonPatch.Converters;
 using AspNetCore.JsonPatch.Exceptions;
 
 namespace AspNetCore.JsonPatch.Operations
@@ -11,6 +13,7 @@ namespace AspNetCore.JsonPatch.Operations
     ///     A type describing a typed patch operation.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
+    [JsonConverter(typeof(OperationJsonConverterFactory))]
     public class Operation<TModel> : Operation where TModel : class
     {
         /// <summary>

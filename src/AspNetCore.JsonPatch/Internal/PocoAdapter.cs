@@ -15,7 +15,7 @@ namespace AspNetCore.JsonPatch.Internal
     ///     This API supports infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public class PocoAdapter : IAdapter
+    internal class PocoAdapter : IAdapter
     {
         /// <inheritdoc />
         public virtual bool TryAdd(object target, Type targetType, string? segment, JsonSerializerOptions jsonSerializerOptions, object? value, out string? errorMessage)
@@ -73,7 +73,7 @@ namespace AspNetCore.JsonPatch.Internal
                 // Setting the value to "null" will use the default value in case of value types, and
                 // null in case of reference types
                 object? value = null;
-                if (propertyInfo.PropertyType.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) == null)
+                if (propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) == null)
                     value = Activator.CreateInstance(propertyInfo.PropertyType);
 
                 propertyInfo.SetValue(target, value);
@@ -93,7 +93,7 @@ namespace AspNetCore.JsonPatch.Internal
                 // Setting the value to "null" will use the default value in case of value types, and
                 // null in case of reference types
                 object? value = null;
-                if (fieldInfo.FieldType.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(fieldInfo.FieldType) == null)
+                if (fieldInfo.FieldType.IsValueType && Nullable.GetUnderlyingType(fieldInfo.FieldType) == null)
                     value = Activator.CreateInstance(fieldInfo.FieldType);
 
                 fieldInfo.SetValue(target, value);

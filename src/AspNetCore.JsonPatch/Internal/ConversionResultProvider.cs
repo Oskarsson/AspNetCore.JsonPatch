@@ -11,7 +11,7 @@ namespace AspNetCore.JsonPatch.Internal
     ///     This API supports infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public static class ConversionResultProvider
+    internal static class ConversionResultProvider
     {
         /// <summary>
         ///     Converts a value to a different type.
@@ -90,10 +90,9 @@ namespace AspNetCore.JsonPatch.Internal
 
         private static bool IsNullableType(Type type)
         {
-            var typeInfo = type.GetTypeInfo();
-            if (typeInfo.IsValueType)
+            if (type.IsValueType)
                 // value types are only nullable if they are Nullable<T>
-                return typeInfo.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+                return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
             // reference types are always nullable
             return true;
